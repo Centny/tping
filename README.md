@@ -38,5 +38,5 @@ tping -h 127.0.0.1:8080 -l t.log
 ### Binary
 
 * Win32
-  * [tping.x86.zip](https://github.com/Centny/tping/blob/master/bin/tping.x86.zip)
-  * [tping.x64.zip](https://github.com/Centny/tping/blob/master/bin/tping.x64.zip)
+  * [tping.x86.zip](https://raw.githubusercontent.com/Centny/tping/master/bin/tping.x86.zip)
+  * [tping.x64.zip](https://raw.githubusercontent.com/Centny/tping/master/bin/tping.x64.zip)
