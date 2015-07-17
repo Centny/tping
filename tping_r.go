@@ -1,22 +1,26 @@
 package main
 
 import (
-	"fmt"
 	"github.com/Centny/gwf/util"
-	"os"
+	"os/exec"
+	"runtime"
 	"time"
 )
 
-func RunW(h string, d time.Duration, t int) (int64, error) {
+func RunR(args string, d time.Duration, t int) (int64, error) {
 	beg := util.Now()
-	spath := fmt.Sprintf("%v/%v.tping", os.TempDir(), beg)
-	defer os.Remove(spath)
 	var err error
 	var ended bool = false
 	end_c := make(chan int)
+	var cmd *exec.Cmd
+	if runtime.GOOS == "windows" {
+		cmd = exec.Command("cmd", "/c", args)
+	} else {
+		cmd = exec.Command("/bin/bash", "-c", args)
+	}
 	go func() {
 		for i := 0; i < t; i++ {
-			err = util.DLoad(spath, h)
+			_, err = cmd.Output()
 			if err != nil {
 				break
 			}

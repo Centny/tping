@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"github.com/Centny/gwf/netw"
 	"github.com/Centny/gwf/netw/impl"
 	"github.com/Centny/gwf/pool"
@@ -39,6 +40,10 @@ func run_ts(port string) error {
 	return nil
 }
 func TestPing(t *testing.T) {
+	exit = func(code int) {
+		fmt.Println("calling exit by code:", code)
+	}
+	os.Remove("e.xml")
 	runtime.GOMAXPROCS(runtime.NumCPU() - 1)
 	go Run([]string{"tping", "-m", "S", "-p", ":9910", "-l", "t.log", "-a", "Y"})
 	time.Sleep(100 * time.Millisecond)
@@ -54,6 +59,9 @@ func TestPing(t *testing.T) {
 	go Run([]string{"tping", "-m", "W", "-h", "http://www.bing.com"})
 	go Run([]string{"tping", "-m", "W", "-h", "http://www.bing.com", "-d", "1"})
 	go Run([]string{"tping", "-m", "W", "-h", "http://127.0.0.1:234"})
+	go Run([]string{"tping", "-m", "R", "-r", "echo abc"})
+	go Run([]string{"tping", "-m", "R", "-r", "xddd abc"})
+	go Run([]string{"tping", "127.0.0.1:9910x"})
 	go func() {
 		lc, rc, _ := impl.ExecDail_m_j(pool.NewBytePool(8, 1024), "127.0.0.1:9910", netw.NewCWH(true))
 		rc.Start()
@@ -72,5 +80,18 @@ func TestPing(t *testing.T) {
 	time.Sleep(time.Second)
 	v := Ping_C{}
 	v.Ping("ss")
+	os.Args = []string{"tping", "-m", "SS"}
 	main()
+	//
+	Run([]string{"tping", "-m", "J", "-j", "t.json", "-e", "e.xml"})
+	Run([]string{"tping", "-m", "J", "-j", "t1.json", "-e", "/e.xml"})
+	Run([]string{"tping", "-m", "J", "-j", "t2.json", "-e", "/e.xml"})
+	Run([]string{"tping", "-m", "J", "-j", "xx.json", "-e", "/e.xml"})
+	Run([]string{"tping", "-a", "Y", "http://www.bing.com"})
+	Run([]string{"tping", "http://www.bing.com", "-a", "Y"})
+	Run([]string{"tping", "-m", "C"})
+	Run([]string{"tping", "-m", "R"})
+	Run([]string{"tping", "-m", "W"})
+	Run([]string{"tping", "-m", "J"})
+	//
 }

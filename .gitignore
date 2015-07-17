@@ -8,3 +8,7 @@ coverage.xml
 coverage.json
 
 coverage.html
+
+e.xml
+
+*.json
