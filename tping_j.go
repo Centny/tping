@@ -30,10 +30,10 @@ func RunJ(in, e string) error {
 		switch task.Type {
 		case TP_W:
 			if len(task.Host) < 1 {
-				log.W("run task(%v) by type(%v) err:host is empty ", task.Name, task.Type)
+				log.W("run task(%v) by type(%v),delay(%v),times(%v) err:host is empty ", task.Name, task.Type, task.Delay, task.Times)
 				break
 			}
-			log.D("running task(%v) by type(%v),host(%v)", task.Name, task.Type, task.Host)
+			log.D("running task(%v) by type(%v),host(%v),delay(%v),times(%v)", task.Name, task.Type, task.Host, task.Delay, task.Times)
 			delay, err := RunW(task.Host, time.Duration(task.Delay)*time.Millisecond, task.Times)
 			var class, block, line string = "1/1", "", ""
 			if err == nil {
@@ -52,16 +52,16 @@ func RunJ(in, e string) error {
 			}
 			err = tutil.Emma(e, task.Name, class, class, block, line)
 			if err != nil {
-				log.E("run task(%v) by type(%v) err:append emma report err(%v)", task.Name, task.Type, err.Error())
+				log.E("run task(%v) by type(%v),delay(%v),times(%v) err:append emma report err(%v)", task.Name, task.Type, task.Delay, task.Times, err.Error())
 				return err
 			}
 			log.D("task(%v) done by type(%v),host(%v), delay:%v", task.Name, task.Type, task.Host, delay)
 		case TP_R:
 			if len(task.Cmds) < 1 {
-				log.W("run task(%v) by type(%v) err:cmds is empty ", task.Name, task.Type)
+				log.W("run task(%v) by type(%v),delay(%v),times(%v) err:cmds is empty ", task.Name, task.Type, task.Delay, task.Times)
 				break
 			}
-			log.D("running task(%v) by type(%v),cmds(%v)", task.Name, task.Type, task.Cmds)
+			log.D("running task(%v) by type(%v),cmds(%v),delay(%v),times(%v)", task.Name, task.Type, task.Cmds, task.Delay, task.Times)
 			delay, err := RunR(task.Cmds, time.Duration(task.Delay)*time.Millisecond, task.Times)
 			var class, block, line string = "1/1", "", ""
 			if err == nil {
@@ -75,7 +75,7 @@ func RunJ(in, e string) error {
 				}
 				block = fmt.Sprintf("%v/%v", delay, delay)
 			} else {
-				log.E("run task(%v) by type(%v) err:%v", task.Name, task.Type, err.Error())
+				log.E("run task(%v) by type(%v),delay(%v),times(%v) err:%v", task.Name, task.Type, task.Delay, task.Times, err.Error())
 				class, block, line = "0/1", "0/1", "0/1"
 			}
 			err = tutil.Emma(e, task.Name, class, class, block, line)
