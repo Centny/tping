@@ -33,6 +33,7 @@ func RunJ(in, e string) error {
 				log.W("run task(%v) by type(%v) err:host is empty ", task.Name, task.Type)
 				break
 			}
+			log.D("run task(%v) by type(%v),host(%v)", task.Name, task.Type, task.Host)
 			delay, err := RunW(task.Host, time.Duration(task.Delay)*time.Millisecond, task.Times)
 			if err != nil {
 				log.E("run task(%v) by type(%v) err:%v", task.Name, task.Type, err.Error())
@@ -49,6 +50,7 @@ func RunJ(in, e string) error {
 			}
 			err = tutil.Emma(e, task.Name, "1/1", "1/1", "1/1", line)
 			if err != nil {
+				log.E("run task(%v) by type(%v) err:append emma report err(%v)", task.Name, task.Type, err.Error())
 				return err
 			}
 		case TP_R:
@@ -56,6 +58,7 @@ func RunJ(in, e string) error {
 				log.W("run task(%v) by type(%v) err:cmds is empty ", task.Name, task.Type)
 				break
 			}
+			log.D("run task(%v) by type(%v),host(%v)", task.Name, task.Type, task.Cmds)
 			delay, err := RunR(task.Cmds, time.Duration(task.Delay)*time.Millisecond, task.Times)
 			if err != nil {
 				log.E("run task(%v) by type(%v) err:%v", task.Name, task.Type, err.Error())
@@ -72,6 +75,7 @@ func RunJ(in, e string) error {
 			}
 			err = tutil.Emma(e, task.Name, "1/1", "1/1", "1/1", line)
 			if err != nil {
+				log.E("run task(%v) by type(%v) err:append emma report err(%v)", task.Name, task.Type, err.Error())
 				return err
 			}
 		default:

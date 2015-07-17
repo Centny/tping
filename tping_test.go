@@ -84,6 +84,7 @@ func TestPing(t *testing.T) {
 	main()
 	//
 	Run([]string{"tping", "-m", "J", "-j", "t.json", "-e", "e.xml"})
+	Run([]string{"tping", "-m", "J", "-j", "t.json", "-help", "-e", "e.xml"})
 	Run([]string{"tping", "-m", "J", "-j", "t1.json", "-e", "/e.xml"})
 	Run([]string{"tping", "-m", "J", "-j", "t2.json", "-e", "/e.xml"})
 	Run([]string{"tping", "-m", "J", "-j", "xx.json", "-e", "/e.xml"})
@@ -93,5 +94,6 @@ func TestPing(t *testing.T) {
 	Run([]string{"tping", "-m", "R"})
 	Run([]string{"tping", "-m", "W"})
 	Run([]string{"tping", "-m", "J"})
+	Run([]string{"tping", "-help"})
 	//
 }

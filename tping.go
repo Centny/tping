@@ -27,8 +27,9 @@ var ping_l bool = true
 func Usage() {
 	fmt.Println(`Usage:
  args:
-  -l log file
-  -a show all log, default Y
+  -l    log file.
+  -a    show all log, default Y.
+  -help show this.
 
  run mode:
   tping -m S [-p listen port, default :9100]
@@ -70,6 +71,9 @@ func Run(args []string) {
 	alen := len(args) - 1
 	for i := 1; i < alen; i++ {
 		switch args[i] {
+		case "-help":
+			Usage()
+			return
 		case "-l":
 			l = args[i+1]
 			i++
@@ -115,6 +119,10 @@ func Run(args []string) {
 				h = args[i]
 			}
 		}
+	}
+	if args[alen] == "-help" {
+		Usage()
+		return
 	}
 	if alen == 1 && len(h) < 1 {
 		h = args[alen]
@@ -200,8 +208,6 @@ func Run(args []string) {
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err.Error())
 			exit(1)
-		} else {
-			fmt.Println(delay)
 		}
 	}
 }
