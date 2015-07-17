@@ -35,20 +35,22 @@ func RunJ(in, e string) error {
 			}
 			log.D("running task(%v) by type(%v),host(%v)", task.Name, task.Type, task.Host)
 			delay, err := RunW(task.Host, time.Duration(task.Delay)*time.Millisecond, task.Times)
-			if err != nil {
-				log.E("run task(%v) by type(%v) err:%v", task.Name, task.Type, err.Error())
-				break
-			}
-			var line string
-			if task.Delay < 1 {
-				line = fmt.Sprintf("%v/%v", delay, delay)
-			} else {
-				if task.Delay < delay {
-					task.Delay = delay
+			var class, block, line string = "1/1", "", ""
+			if err == nil {
+				if task.Delay < 1 {
+					line = fmt.Sprintf("%v/%v", delay, delay)
+				} else {
+					if task.Delay < delay {
+						task.Delay = delay
+					}
+					line = fmt.Sprintf("%v/%v", task.Delay-delay, task.Delay)
 				}
-				line = fmt.Sprintf("%v/%v", task.Delay-delay, task.Delay)
+				block = fmt.Sprintf("%v/%v", delay, delay)
+			} else {
+				log.E("run task(%v) by type(%v) err:%v", task.Name, task.Type, err.Error())
+				class, block, line = "0/1", "0/1", "0/1"
 			}
-			err = tutil.Emma(e, task.Name, "1/1", "1/1", fmt.Sprintf("%v/%v", delay, delay), line)
+			err = tutil.Emma(e, task.Name, class, class, block, line)
 			if err != nil {
 				log.E("run task(%v) by type(%v) err:append emma report err(%v)", task.Name, task.Type, err.Error())
 				return err
@@ -61,20 +63,22 @@ func RunJ(in, e string) error {
 			}
 			log.D("running task(%v) by type(%v),cmds(%v)", task.Name, task.Type, task.Cmds)
 			delay, err := RunR(task.Cmds, time.Duration(task.Delay)*time.Millisecond, task.Times)
-			if err != nil {
-				log.E("run task(%v) by type(%v) err:%v", task.Name, task.Type, err.Error())
-				break
-			}
-			var line string
-			if task.Delay < 1 {
-				line = fmt.Sprintf("%v/%v", delay, delay)
-			} else {
-				if task.Delay < delay {
-					task.Delay = delay
+			var class, block, line string = "1/1", "", ""
+			if err == nil {
+				if task.Delay < 1 {
+					line = fmt.Sprintf("%v/%v", delay, delay)
+				} else {
+					if task.Delay < delay {
+						task.Delay = delay
+					}
+					line = fmt.Sprintf("%v/%v", task.Delay-delay, task.Delay)
 				}
-				line = fmt.Sprintf("%v/%v", task.Delay-delay, task.Delay)
+				block = fmt.Sprintf("%v/%v", delay, delay)
+			} else {
+				log.E("run task(%v) by type(%v) err:%v", task.Name, task.Type, err.Error())
+				class, block, line = "0/1", "0/1", "0/1"
 			}
-			err = tutil.Emma(e, task.Name, "1/1", "1/1", fmt.Sprintf("%v/%v", delay, delay), line)
+			err = tutil.Emma(e, task.Name, class, class, block, line)
 			if err != nil {
 				log.E("run task(%v) by type(%v) err:append emma report err(%v)", task.Name, task.Type, err.Error())
 				return err
