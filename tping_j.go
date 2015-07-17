@@ -48,7 +48,7 @@ func RunJ(in, e string) error {
 				}
 				line = fmt.Sprintf("%v/%v", task.Delay-delay, task.Delay)
 			}
-			err = tutil.Emma(e, task.Name, "1/1", "1/1", "1/1", line)
+			err = tutil.Emma(e, task.Name, "1/1", "1/1", fmt.Sprintf("%v/%v", delay, delay), line)
 			if err != nil {
 				log.E("run task(%v) by type(%v) err:append emma report err(%v)", task.Name, task.Type, err.Error())
 				return err
@@ -74,7 +74,7 @@ func RunJ(in, e string) error {
 				}
 				line = fmt.Sprintf("%v/%v", task.Delay-delay, task.Delay)
 			}
-			err = tutil.Emma(e, task.Name, "1/1", "1/1", "1/1", line)
+			err = tutil.Emma(e, task.Name, "1/1", "1/1", fmt.Sprintf("%v/%v", delay, delay), line)
 			if err != nil {
 				log.E("run task(%v) by type(%v) err:append emma report err(%v)", task.Name, task.Type, err.Error())
 				return err
