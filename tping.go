@@ -40,6 +40,21 @@ func Usage() {
  example:
   'tping [-m S]' will listen tcp port on :9100
   'tping [-m W] http://www.bing.com' testing connect to www.bing.com by http and delay 1s.
+
+ json format for J mode:
+  [{
+  	"name":"task name",
+  	"type":"W",   //task type on W|R,W is http task,R is command task.
+  	"delay":1000, //millisecond
+  	"times":1,    //exec times.
+  	"host":"http://www.bing.com"
+  },{
+  	"name":"task name2",
+  	"type":"R",   //task type on W|R,W is http task,R is command task.
+  	"delay":1000, //millisecond
+  	"times":1,    //exec times.
+  	"cmds":"echo abc" //command and arguments.
+  }]
 		`)
 }
 func Run(args []string) {
