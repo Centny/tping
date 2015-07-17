@@ -29,10 +29,12 @@ func RunR(args string, d time.Duration, t int) (int64, error) {
 		end_c <- 0
 	}()
 	if d > 0 {
-		time.Sleep(d)
-	} else {
-		<-end_c
+		go func() {
+			time.Sleep(d)
+			end_c <- 0
+		}()
 	}
+	<-end_c
 	if err != nil {
 		return 0, err
 	}

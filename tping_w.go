@@ -13,7 +13,7 @@ func RunW(h string, d time.Duration, t int) (int64, error) {
 	defer os.Remove(spath)
 	var err error
 	var ended bool = false
-	end_c := make(chan int)
+	end_c := make(chan int, 2)
 	go func() {
 		for i := 0; i < t; i++ {
 			err = util.DLoad(spath, h)
@@ -25,10 +25,12 @@ func RunW(h string, d time.Duration, t int) (int64, error) {
 		end_c <- 0
 	}()
 	if d > 0 {
-		time.Sleep(d)
-	} else {
-		<-end_c
+		go func() {
+			time.Sleep(d)
+			end_c <- 0
+		}()
 	}
+	<-end_c
 	if err != nil {
 		return 0, err
 	}
